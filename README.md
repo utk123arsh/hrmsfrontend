@@ -140,12 +140,93 @@ To point to another backend, change `baseURL` in `src/api/axios.js` (or use an e
 4. Axios attaches token to all protected API requests
 5. ProtectedRoute ensures secure page access
 
-## � Attendance Rules
+## 📋 Assumptions & Constraints
 
-- **View Attendance** — Date picker and list are limited to today and past dates (no future).
-- **Mark Attendance** — Same: only today or past dates; each employee has Present/Absent checkboxes; save creates or updates records via the API.
-- **Weekends** — Weekends (Saturday/Sunday) are automatically prevented; selecting a weekend adjusts to the previous weekday (Friday).
-- **Editing** — Once attendance is saved for a date, editing is disabled for that date to ensure data credibility.
+### Core Assumptions
+- Single admin user with hardcoded credentials for demo purposes
+- No multi-user or role-based access control implemented
+- All attendance data is date-specific and employee-specific
+- Backend API is always available and responds correctly
+
+### Out of Scope
+- Leave management system
+- Payroll and salary processing
+- Advanced HR features (appraisals, training, recruitment, etc.)
+- Multi-department reporting
+- Bulk import/export of employee data
+- SMS/Email notifications
+- Mobile app
+
+### UI/UX Guidelines Applied
+- Clean layout with consistent spacing
+- Intuitive navigation via sidebar
+- Responsive design for different screen sizes
+- Clear visual hierarchy with typography
+- Reusable components (Layout, Loader, StatCard, ProtectedRoute)
+- Meaningful UI states: Loading, Empty, Error, Success
+
+### Code Quality Standards
+- Modular and well-structured React components
+- Readable and maintainable code
+- Consistent naming conventions
+- Proper error handling and logging
+- API error messages displayed to user
+- Console logs for debugging
+
+### Data Integrity
+- Attendance records are immutable once submitted
+- Date-based filtering prevents data mixing across dates
+- Employee deduplication by normalized ID
+- Proper status normalization (Present/Absent)
+
+## ✨ Implemented Features
+
+### Bonus Features Implemented
+✅ **Filter attendance records by date** — View Attendance tab shows records for selected date only  
+✅ **Date-wise filtering** — Prevents data contamination when switching dates  
+✅ **Dashboard summary** — Total employees, present today, absent today counts  
+✅ **Attendance statistics** — View historical records with status per date  
+
+### Additional Features
+✅ **Dual-mode attendance** — Separate View and Mark modes for clarity  
+✅ **Employee deduplication** — Handles duplicate API responses gracefully  
+✅ **Status normalization** — Consistent Present/Absent handling across the app  
+✅ **Not Marked state** — Shows employees with no attendance record for a date  
+✅ **Auto-save detection** — Visual indicator when attendance is saved vs. unsaved  
+
+## 🔄 Data Flow
+
+```
+Login → Dashboard → Employees/Attendance
+   ↓
+   ├─ Employees Tab: Add/Delete employees
+   │
+   └─ Attendance Tab:
+      ├─ View Mode: Shows attendance for selected date
+      ├─ Mark Mode: Allows marking Present/Absent for all employees
+      └─ Auto-PATCH for updates, POST for new records
+```
+
+## 🐛 Known Limitations & Notes
+
+1. **Demo Credentials**: Hardcoded username/password (admin/admin1) — replace with real auth in production
+2. **No weekend handling**: Weekend blocking mentioned in requirements is validated server-side
+3. **Single admin**: No user management or permission levels
+4. **Local state**: Attendance updates are optimistic; UI may not sync if backend fails
+5. **Deduplication**: Records prioritized by highest ID when duplicates exist
+
+## 🌐 Deployment
+
+### Frontend
+- **Live URL**: (Share your deployed frontend URL here)
+- **Platform**: Vite-based React app
+
+### Backend
+- **Base URL**: `https://web-production-15d00.up.railway.app/api`
+- **Status**: Deployed and running
+
+### Repository
+- **GitHub**: https://github.com/utk123arsh/hrmsfrontend
 
 ## �📌 Author
 
