@@ -110,11 +110,17 @@ export default function Employees() {
   const handleDeleteEmployee = async (id) => {
     if (window.confirm('Are you sure you want to delete this employee?')) {
       try {
-        await api.delete(`/employees/${id}/`);
+        const response = await api.delete(`/employees/${id}/`);
+        console.log('✅ Deleted employee', id, response.status);
         fetchEmployees();
       } catch (err) {
-        setError('Failed to delete employee');
-        console.error(err);
+        console.error('❌ Delete employee error', {
+          id,
+          status: err.response?.status,
+          data: err.response?.data,
+          message: err.message,
+        });
+        setError('Failed to delete employee: ' + (err.response?.data || err.message));
       }
     }
   };
@@ -244,7 +250,7 @@ export default function Employees() {
                     <td className="px-6 py-4 text-sm text-gray-700">{emp.department || 'N/A'}</td>
                     <td className="px-6 py-4 text-sm">
                       <button
-                        onClick={() => handleDeleteEmployee(emp.employee_id || emp.id)}
+                        onClick={() => handleDeleteEmployee(emp.id)}
                         className="text-red-600 hover:text-red-800 font-medium"
                       >
                         Delete
